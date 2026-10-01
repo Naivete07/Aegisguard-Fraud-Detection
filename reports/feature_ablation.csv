@@ -1,0 +1,3 @@
+model,pr_auc,precision,recall,f1,threshold,fit_seconds
+XGBoost raw columns,0.8598,0.7698,0.7998,0.7845,0.9352,9.7
+XGBoost raw + behavioural,0.971,0.9502,0.9091,0.9292,0.8008,18.5

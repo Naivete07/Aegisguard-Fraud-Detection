@@ -1,0 +1,5 @@
+model,pr_auc,precision,recall,f1,alerts
+XGBoost only,0.971,0.9502,0.9091,0.9292,884
+Isolation Forest only,0.3218,0.229,0.4491,0.3034,1812
+OR-fusion (IF top 0.5%),,0.2471,0.9242,0.39,3456
+Stacked (IF score -> XGBoost),0.9705,0.9576,0.9037,0.9298,872

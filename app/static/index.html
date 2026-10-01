@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AegisGuard | Real-Time Fraud Detection & SHAP Explainability Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css?v=1.0.1" />
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="cyber-header">
+    <div class="cyber-header-left">
+      <div class="brand-wrapper" id="brand-home-btn" title="AegisGuard Production Dashboard">
+        <span class="brand-icon-box">■</span>
+        <span class="brand-title">AEGIS//GUARD</span>
+        <span class="badge-version">PROD v1.0.0</span>
+      </div>
+    </div>
+
+    <div class="cyber-header-center">
+      <div class="cluster-status">
+        <span>▤</span>
+        <span class="cluster-name">CLUSTER: US-EAST-PRIMARY</span>
+        <span>|</span>
+        <span>STATUS:</span>
+        <span class="cluster-status-val">HEALTHY</span>
+      </div>
+
+      <div class="header-metric-item">
+        THROUGHPUT: <strong class="text-cyan">28,491 EPS</strong>
+      </div>
+
+      <div class="header-metric-item">
+        HIGH-RISK QUEUE: <strong class="text-crimson-bright" id="header-anomaly-load">3 PENDING</strong>
+      </div>
+    </div>
+
+    <div class="cyber-header-right">
+      <div class="search-hud-input" id="search-trigger-box">
+        <span>🔍</span>
+        <input type="text" id="global-search-input" placeholder="SEARCH CARD, MERCHANT, ID" />
+        <span class="shortcut-badge">⌘K</span>
+      </div>
+
+      <button class="header-icon-btn" id="btn-header-notifs" title="Fraud Alerts">
+        <span>🔔</span>
+        <span class="btn-unread-dot" id="header-notif-dot"></span>
+      </button>
+
+      <button class="header-icon-btn" id="btn-header-settings" title="Engine Settings & Rules">
+        <span>⚙️</span>
+      </button>
+
+      <div class="header-avatar-btn" id="btn-user-avatar" title="Fraud Analyst Session">
+        <span>AG</span>
+      </div>
+
+      <!-- Notification Center Dropdown Flyout -->
+      <div class="notification-flyout" id="notification-flyout">
+        <div class="notif-header">
+          <div class="notif-title-wrap">
+            <span class="notif-title">⚡ THREAT NOTIFICATIONS</span>
+            <span class="notif-badge-pill" id="notif-unread-count">0 NEW</span>
+          </div>
+          <div class="notif-actions">
+            <button class="btn-notif-text" id="btn-notif-mark-read">Mark Read</button>
+            <button class="btn-notif-text" id="btn-notif-clear">Clear</button>
+            <button class="modal-close" id="btn-notif-close" style="font-size:16px;">&times;</button>
+          </div>
+        </div>
+
+        <div class="notif-filter-chips">
+          <button class="btn-filter-chip active" data-filter="all">All Feed</button>
+          <button class="btn-filter-chip" data-filter="critical">🚨 Critical Block</button>
+          <button class="btn-filter-chip" data-filter="warning">⚠️ High Risk Review</button>
+          <button class="btn-filter-chip" data-filter="system">⚙️ System & Drift</button>
+        </div>
+
+        <div class="notif-list-container" id="notif-list-container">
+          <!-- Dynamic Items Injected by JS -->
+        </div>
+
+        <div class="notif-footer">
+          <button class="btn-notif-text" id="btn-notif-view-all">View All in Triage Queue →</button>
+          <button class="btn-notif-text" id="btn-notif-test-alert">⚡ Simulate Trigger</button>
+        </div>
+      </div>
+
+      <!-- Fraud Analyst Profile & Session Flyout -->
+      <div class="profile-flyout" id="profile-flyout">
+        <div class="profile-flyout-header">
+          <div class="profile-header-user">
+            <div class="profile-avatar-large" id="profile-avatar-display">AG</div>
+            <div class="profile-user-info">
+              <div class="profile-name" id="profile-analyst-name">Agent Vivek Yadav</div>
+              <div class="profile-role">ANALYST-LEAD // SEC-OPS</div>
+            </div>
+          </div>
+          <button class="modal-close" id="btn-profile-close" style="font-size:16px;">&times;</button>
+        </div>
+
+        <div class="profile-security-badge-row">
+          <span class="badge-tag-cyan">CLEARANCE: LEVEL 4</span>
+          <span class="badge-tag-green">CIP/AML CERTIFIED</span>
+          <span class="badge-tag-amber" id="profile-session-timer">CONNECTED: 00:00:00</span>
+        </div>
+
+        <div class="profile-body">
+          <div class="profile-section-title">📊 SHIFT TRIAGE TELEMETRY</div>
+          <div class="profile-stats-grid">
+            <div class="profile-stat-box">
+              <div class="stat-box-label">CASES RESOLVED</div>
+              <div class="stat-box-val text-cyan" id="profile-cases-count">0</div>
+            </div>
+            <div class="profile-stat-box">
+              <div class="stat-box-label">FRAUD ACCURACY</div>
+              <div class="stat-box-val text-emerald">99.2%</div>
+            </div>
+            <div class="profile-stat-box">
+              <div class="stat-box-label">AVG TRIAGE TIME</div>
+              <div class="stat-box-val text-amber">12.4s</div>
+            </div>
+            <div class="profile-stat-box">
+              <div class="stat-box-label">LOSS PREVENTED</div>
+              <div class="stat-box-val text-crimson" id="profile-loss-prevented">$0.00</div>
+            </div>
+          </div>
+
+          <div class="profile-section-title">👤 ANALYST IDENTITY & SIGNATURE</div>
+          <div class="profile-id-edit-wrap">
+            <div class="setting-desc">Analyst Signature Tag (Attributed on audit resolutions):</div>
+            <div style="display:flex; gap:6px; margin-top:4px;">
+              <input type="text" id="input-analyst-id" class="input-control font-mono" value="ANALYST_VIVEK_LEAD" />
+              <button class="btn btn-outline btn-sm" id="btn-save-analyst-id">Save</button>
+            </div>
+          </div>
+
+          <div class="profile-section-title">⌨️ HOTKEY SHORTCUTS</div>
+          <div class="profile-shortcuts-list">
+            <div class="shortcut-row"><span class="shortcut-key">⌘K / Ctrl+K</span><span>Global Search</span></div>
+            <div class="shortcut-row"><span class="shortcut-key">1 - 6</span><span>Switch Workspace Tabs</span></div>
+            <div class="shortcut-row"><span class="shortcut-key">Esc</span><span>Close Open Panels / Modals</span></div>
+          </div>
+        </div>
+
+        <div class="profile-footer">
+          <button class="btn btn-outline btn-sm" id="btn-copy-session-token">📋 Copy Session ID</button>
+          <button class="btn btn-danger btn-sm" id="btn-lock-session">🔒 Lock Console</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sub-Header Status Ribbon -->
+  <div class="cyber-statusbar">
+    <div class="statusbar-left">
+      <div class="core-level-title">
+        <span class="status-dot-cyan"></span>
+        <span>SCORING ENGINE // XGBOOST + ISOLATION FOREST</span>
+      </div>
+      <div class="target-lock-badge">
+        ACTIVE CASE: <strong id="ribbon-target-lock">ALERT #8942</strong>
+      </div>
+      <div class="geo-coords">
+        ROUTE: [CHICAGO, IL ➔ LOS ANGELES, CA]
+      </div>
+    </div>
+
+    <div class="statusbar-right">
+      <div class="drift-metric">
+        FEATURE DRIFT (PSI) <strong id="ribbon-drift-coeff">δ=0.0039 (STABLE)</strong>
+      </div>
+      <div class="pill-redis-lag" id="ribbon-redis-lag">
+        STREAM LATENCY 0.0ms
+      </div>
+      <div class="pill-defcon">
+        <span>⚠</span> HIGH-ALERT ACTIVE
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="cyber-layout">
+    <!-- Left Sidebar -->
+    <aside class="cyber-sidebar">
+      <div>
+        <div class="sidebar-telemetry-meta">
+          <div class="telemetry-row">
+            <span>DATA PIPELINE</span>
+            <span>REDIS STREAM</span>
+          </div>
+          <div class="telemetry-row">
+            <span>INFERENCE NODE</span>
+            <span>WORKER-04</span>
+          </div>
+        </div>
+
+        <nav class="cyber-nav-menu">
+          <button class="cyber-nav-item active" data-tab="stream">
+            <span class="nav-icon">◎</span>
+            <span>Live Threat Stream</span>
+          </button>
+          <button class="cyber-nav-item" data-tab="telemetry">
+            <span class="nav-icon">📈</span>
+            <span>Alert Triage Queue</span>
+          </button>
+          <button class="cyber-nav-item" data-tab="shap">
+            <span class="nav-icon">📊</span>
+            <span>SHAP Explainability</span>
+          </button>
+          <button class="cyber-nav-item" data-tab="defenses">
+            <span class="nav-icon">🛡</span>
+            <span>Drift & PSI Monitor</span>
+          </button>
+          <button class="cyber-nav-item" data-tab="warroom">
+            <span class="nav-icon">⚡</span>
+            <span>Testing Sandbox</span>
+          </button>
+          <button class="cyber-nav-item" data-tab="diagnostics">
+            <span class="nav-icon">⚙</span>
+            <span>Model Diagnostics</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-gauges">
+        <div>
+          <div class="gauge-row">
+            <span>INFERENCE LATENCY</span>
+            <span class="gauge-val" id="sidebar-latency-val">1.42ms</span>
+          </div>
+          <div class="gauge-bar-track">
+            <div class="gauge-bar-fill" style="width: 28%"></div>
+          </div>
+        </div>
+
+        <div class="gauge-row-optimal">
+          <span>THROUGHPUT 28.4k QPS</span>
+          <span class="status-optimal-tag">OPTIMAL</span>
+        </div>
+
+        <div class="operator-status-row">
+          <span>ANALYST // ACTIVE</span>
+          <span class="operator-indicator-dot"></span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Content Workspace -->
+    <main class="cyber-workspace">
+
+      <!-- ===================================================================
+           TAB 1: LIVE THREAT STREAM (GENUINE ENTERPRISE SOC VIEW)
+           =================================================================== -->
+      <div class="tab-pane active" id="pane-stream">
+        <div class="hud-grid">
+
+          <!-- COLUMN 1: Feature Impact Matrix & Calibration -->
+          <div class="hud-col">
+            <!-- Feature Impact Card -->
+            <div class="hud-card">
+              <div class="hud-card-header">
+                <div class="hud-card-title-group">
+                  <span class="hud-card-icon">📊</span>
+                  <h3 class="hud-card-title">SHAP FEATURE ATTRIBUTION</h3>
+                </div>
+                <span class="hud-badge-tag">XGB.TREE</span>
+              </div>
+              <p class="hud-card-desc">
+                Local feature weight contributions on active transaction. Positive displacement increases fraud probability; negative denotes normal baseline.
+              </p>
+
+              <!-- Bidirectional SHAP Bar Chart -->
+              <div class="attenuation-chart-container">
+                <div class="zero-axis-label">ZERO_AXIS</div>
+                <div class="zero-axis-line"></div>
+                <div class="bar-chart-grid" id="attenuation-bars-wrap">
+                  <div class="bar-col">
+                    <div class="bar-upper-half">
+                      <span class="bar-val-top bar-val-pos">+0.38φ</span>
+                      <div class="bar-pill-positive" style="height: 38px;"></div>
+                    </div>
+                    <div class="bar-lower-half"></div>
+                    <span class="bar-col-label">DIST</span>
+                  </div>
+
+                  <div class="bar-col">
+                    <div class="bar-upper-half">
+                      <span class="bar-val-top bar-val-pos">+0.27φ</span>
+                      <div class="bar-pill-positive" style="height: 27px;"></div>
+                    </div>
+                    <div class="bar-lower-half"></div>
+                    <span class="bar-col-label">VEL</span>
+                  </div>
+
+                  <div class="bar-col">
+                    <div class="bar-upper-half">
+                      <span class="bar-val-top bar-val-pos">+0.18φ</span>
+                      <div class="bar-pill-positive" style="height: 18px;"></div>
+                    </div>
+                    <div class="bar-lower-half"></div>
+                    <span class="bar-col-label">Z-SC</span>
+                  </div>
+
+                  <div class="bar-col">
+                    <div class="bar-upper-half">
+                      <span class="bar-val-top bar-val-pos">+0.09φ</span>
+                      <div class="bar-pill-positive" style="height: 9px;"></div>
+                    </div>
+                    <div class="bar-lower-half"></div>
+                    <span class="bar-col-label">MRCH</span>
+                  </div>
+
+                  <div class="bar-col">
+                    <div class="bar-upper-half"></div>
+                    <div class="bar-lower-half">
+                      <div class="bar-pill-negative" style="height: 8px;"></div>
+                      <span class="bar-val-top bar-val-neg">-0.08φ</span>
+                    </div>
+                    <span class="bar-col-label">TENR</span>
+                  </div>
+
+                  <div class="bar-col">
+                    <div class="bar-upper-half"></div>
+                    <div class="bar-lower-half">
+                      <div class="bar-pill-negative" style="height: 16px;"></div>
+                      <span class="bar-val-top bar-val-neg">-0.14φ</span>
+                    </div>
+                    <span class="bar-col-label">AUTH</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Risk Metrics -->
+              <div class="matrix-metrics-group">
+                <div class="matrix-metric-row">
+                  <span class="metric-label">EXPECTED BASELINE E(f(x))</span>
+                  <span class="metric-val-clean">0.038 (3.8%)</span>
+                </div>
+                <div class="matrix-metric-row">
+                  <span class="metric-label">OBSERVED RISK f(x)</span>
+                  <span class="metric-val-critical" id="matrix-observed-risk">0.962 (CRITICAL)</span>
+                </div>
+              </div>
+
+              <!-- Automated Decision Controls -->
+              <div class="matrix-toggles-group">
+                <div class="toggle-row">
+                  <span class="toggle-label font-bold">POLICY OVERRIDE</span>
+                  <button class="btn-status-pill" id="btn-toggle-inhibitor">[DISABLED]</button>
+                </div>
+                <div class="toggle-row">
+                  <span class="toggle-label font-bold">AUTOMATED BLOCK ENFORCER</span>
+                  <span class="status-online-pill">● ACTIVE (&gt; 0.75)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Model Benchmark Card -->
+            <div class="hud-card">
+              <div class="hud-card-header">
+                <div class="hud-card-title-group">
+                  <span class="hud-card-icon">🎛</span>
+                  <h3 class="hud-card-title">HYBRID MODEL CALIBRATION</h3>
+                </div>
+                <span class="hud-badge-tag">XGB + IF</span>
+              </div>
+              <div class="hyperplane-grid mt-2">
+                <div class="hyperplane-box">
+                  <div class="hp-label">SHAP CONVERGENCE</div>
+                  <div class="hp-val">99.98%</div>
+                </div>
+                <div class="hyperplane-box">
+                  <div class="hp-label">LATENCY P95</div>
+                  <div class="hp-val">14.2ms</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMN 2: Genuine Real-Time Transaction Flow & Geo Velocity Centerpiece -->
+          <div class="hud-col">
+            <div class="hud-card stream-center-card">
+              <div class="hud-card-header">
+                <div>
+                  <h3 class="hud-card-title">LIVE TRANSACTION SCORING & VELOCITY MONITOR</h3>
+                  <p class="hud-card-desc" style="margin-bottom: 0;">Real-time risk scoring stream, decision tier thresholds, and geospatial dislocation analysis</p>
+                </div>
+                <div class="radar-header-right">
+                  <span class="badge-tag-crimson font-mono">
+                    ● ACTIVE SCORING FEED
+                  </span>
+                </div>
+              </div>
+
+              <!-- Real-time Transaction Scoring Stream Chart -->
+              <div class="stream-chart-wrap">
+                <div class="stream-chart-header">
+                  <span>REAL-TIME SCORING SCATTER (0% ➔ 100% RISK)</span>
+                  <div class="chart-legend">
+                    <span class="legend-item"><span class="legend-dot dot-block"></span> Auto-Block (&gt;75%)</span>
+                    <span class="legend-item"><span class="legend-dot dot-review"></span> Manual Review (40-75%)</span>
+                    <span class="legend-item"><span class="legend-dot dot-approve"></span> Approved (&lt;40%)</span>
+                  </div>
+                </div>
+                <canvas id="transaction-stream-canvas"></canvas>
+              </div>
+
+              <!-- Geospatial Route & Velocity Inspector -->
+              <div class="geo-route-card">
+                <div class="geo-route-header">
+                  <span class="geo-route-title">SPATIAL VELOCITY & IMPOSSIBLE TRAVEL INSPECTOR</span>
+                  <span class="geo-route-badge">FLAG: IMPOSSIBLE TRAVEL</span>
+                </div>
+
+                <div class="geo-points-grid">
+                  <div class="geo-location-box">
+                    <span class="geo-loc-type">Cardholder Primary Home</span>
+                    <span class="geo-loc-city">Chicago, IL (ORD)</span>
+                    <span class="geo-loc-coords">41.8781° N, 87.6298° W</span>
+                  </div>
+
+                  <div class="geo-connector-visual">
+                    <span class="geo-dist-tag">1,745 mi Straight-Line</span>
+                    <div class="geo-arrow-line"></div>
+                  </div>
+
+                  <div class="geo-location-box" style="text-align: right;">
+                    <span class="geo-loc-type">Merchant POS Terminal</span>
+                    <span class="geo-loc-city">Los Angeles, CA (LAX)</span>
+                    <span class="geo-loc-coords">34.0522° N, 118.2437° W</span>
+                  </div>
+                </div>
+
+                <div class="geo-metrics-row">
+                  <div class="geo-metric-item">
+                    <div class="geo-metric-k">Physical Distance</div>
+                    <div class="geo-metric-v">1,745 miles</div>
+                  </div>
+                  <div class="geo-metric-item">
+                    <div class="geo-metric-k">Time Elapsed (Δt)</div>
+                    <div class="geo-metric-v">2.14 minutes</div>
+                  </div>
+                  <div class="geo-metric-item">
+                    <div class="geo-metric-k">Implied Velocity</div>
+                    <div class="geo-metric-v text-danger">48,925 mph (Speed Anomaly)</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KPI Metrics Row -->
+              <div class="center-kpi-row">
+                <div class="center-kpi-box">
+                  <div class="center-kpi-label">MODEL CONSENSUS</div>
+                  <div class="center-kpi-val" id="center-kpi-sync">99.88%</div>
+                </div>
+                <div class="center-kpi-box">
+                  <div class="center-kpi-label">PREVENTED FRAUD (1H)</div>
+                  <div class="center-kpi-val" id="center-kpi-blocked">$148,920.00</div>
+                </div>
+                <div class="center-kpi-box">
+                  <div class="center-kpi-label">FALSE POSITIVE RATE</div>
+                  <div class="center-kpi-val" id="center-kpi-ratio">0.034%</div>
+                </div>
+              </div>
+
+              <!-- Bottom Stream Controls Toolbar -->
+              <div class="stream-actions-toolbar">
+                <div class="stream-actions-left">
+                  <span class="live-feed-dot"></span>
+                  <span>Live Event Pipeline: <strong>28,491 EPS (0.12ms Jitter)</strong></span>
+                </div>
+                <div class="stream-actions-right">
+                  <button class="btn btn-secondary btn-sm" id="btn-quick-sim-center">⚡ Simulate Flow</button>
+                  <button class="btn btn-primary btn-sm" id="btn-open-sandbox-center">➕ Test Transaction</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMN 3: Active Fraud Alerts Queue -->
+          <div class="hud-col">
+            <div class="hud-card intercepts-card">
+              <div class="hud-card-header">
+                <div class="hud-card-title-group">
+                  <span class="text-crimson font-bold">⚠</span>
+                  <h3 class="hud-card-title">ACTIVE FRAUD ALERTS</h3>
+                </div>
+                <span class="badge-tag-crimson font-mono" id="intercepts-count-badge">3 PENDING</span>
+              </div>
+
+              <div class="intercept-list" id="active-intercepts-container">
+                <!-- Card 1 (Critical Haversine Alert) -->
+                <div class="intercept-item critical">
+                  <div class="intercept-top-row">
+                    <span class="intercept-tx-id">ALERT #8942</span>
+                    <span class="intercept-time-ago">12s AGO</span>
+                  </div>
+                  <div class="intercept-amt-row">
+                    <span class="intercept-amt">$9,480.00 USD</span>
+                    <span class="intercept-method">VISA ••• 4891</span>
+                  </div>
+                  <div class="intercept-entity">MERCHANT: Luxury Jewelers [Online / LAX]</div>
+                  <div>
+                    <span class="intercept-badge-tag badge-tag-crimson">FLAG: IMPOSSIBLE SPEED (99.4%)</span>
+                  </div>
+                  <div class="intercept-actions-row">
+                    <button class="btn-intercept-action btn-neutralize" data-action="neutralize" data-id="8942">
+                      <span>🚫</span> BLOCK FRAUD
+                    </button>
+                    <button class="btn-intercept-action" data-action="release" data-id="8942">
+                      <span>🛡</span> FALSE POSITIVE
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Card 2 (Collusion/Amount Spike Alert) -->
+                <div class="intercept-item warning">
+                  <div class="intercept-top-row">
+                    <span class="intercept-tx-id">ALERT #8941</span>
+                    <span class="intercept-time-ago">48s AGO</span>
+                  </div>
+                  <div class="intercept-amt-row">
+                    <span class="intercept-amt">$3,200.00 USD</span>
+                    <span class="intercept-method">WIRE // SWIFT</span>
+                  </div>
+                  <div class="intercept-entity">MERCHANT: Nexus Trading Corp</div>
+                  <div>
+                    <span class="intercept-badge-tag badge-tag-purple">FLAG: VELOCITY SPIKE (78.2%)</span>
+                  </div>
+                  <div class="intercept-actions-row">
+                    <button class="btn-intercept-action btn-neutralize" data-action="hold" data-id="8941">
+                      <span>🚫</span> HOLD REVIEW
+                    </button>
+                    <button class="btn-intercept-action" data-action="pass" data-id="8941">
+                      <span>✓</span> APPROVE
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Card 3 (Passed Low-Risk) -->
+                <div class="intercept-item passed">
+                  <div class="intercept-top-row">
+                    <span class="intercept-tx-id">ALERT #8940</span>
+                    <span class="intercept-time-ago text-dim">APPROVED (0.01φ)</span>
+                  </div>
+                  <div class="intercept-amt-row">
+                    <span class="intercept-amt" style="font-size: 12px;">$42.50 USD</span>
+                    <span class="intercept-method">NYC SUBWAY TRANSIT</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="encryption-status-footer font-mono">
+                ENCRYPTION: TLS 1.3 | SOC2 COMPLIANT
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           TAB 2: ALERT TRIAGE QUEUE
+           =================================================================== -->
+      <div class="tab-pane" id="pane-telemetry">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Fraud Investigation & Alert Triage Queue</h2>
+              <p class="panel-subtitle">Review incoming transactions scored by supervised XGBoost and unsupervised Isolation Forest.</p>
+            </div>
+
+            <div class="filter-toolbar">
+              <input type="text" id="filter-search" class="input-control" placeholder="Search Card, Merchant, Txn ID..." style="width: 220px;" />
+
+              <select id="filter-status" class="select-control">
+                <option value="all">All Statuses</option>
+                <option value="open" selected>Open Only</option>
+                <option value="confirmed_fraud">Confirmed Fraud</option>
+                <option value="false_positive">False Positive</option>
+              </select>
+
+              <select id="filter-decision" class="select-control">
+                <option value="all">All Decisions</option>
+                <option value="block">Block Tier</option>
+                <option value="review">Review Tier</option>
+              </select>
+
+              <select id="filter-risk" class="select-control">
+                <option value="all">All Risk Bands</option>
+                <option value="HIGH">High Risk</option>
+                <option value="MEDIUM">Medium Risk</option>
+                <option value="LOW">Low Risk</option>
+              </select>
+
+              <button class="btn btn-secondary" id="btn-refresh-alerts">
+                <span>🔄</span> Refresh
+              </button>
+              <button class="btn btn-primary" id="btn-quick-simulate">
+                <span>⚡</span> Simulate Flow
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="alerts-table">
+              <thead>
+                <tr>
+                  <th>Alert ID</th>
+                  <th>Timestamp</th>
+                  <th>Card Mask</th>
+                  <th>Merchant / Channel</th>
+                  <th>Amount</th>
+                  <th>XGB Score</th>
+                  <th>Anomaly Score</th>
+                  <th>Decision</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="alerts-table-body">
+                <tr>
+                  <td colspan="10" class="text-center py-6 text-muted">Loading triage stream...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="pagination-bar">
+            <span id="pagination-info">Showing alerts...</span>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-secondary btn-sm" id="btn-page-prev" disabled>Previous</button>
+              <button class="btn btn-secondary btn-sm" id="btn-page-next" disabled>Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           TAB 3: SHAP ATTRIBUTION CASE INVESTIGATION
+           =================================================================== -->
+      <div class="tab-pane" id="pane-shap">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">SHAP TreeExplainer Attribution Deep Dive</h2>
+              <p class="panel-subtitle">Multi-dimensional game-theoretic feature contributions for explainable fraud defense.</p>
+            </div>
+          </div>
+
+          <div class="shap-narrative-card mb-3">
+            <div class="narrative-header">✨ Risk Attribution Summary</div>
+            <p class="narrative-text" id="shap-global-narrative">
+              Real-time tree ensemble indicates spatial velocity (Haversine distance vs time elapsed) and transaction amount z-score constitute 68.4% of total positive risk contribution.
+            </p>
+          </div>
+
+          <div class="shap-chart-wrapper" id="shap-standalone-chart">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           TAB 4: VECTOR DEFENSES (PSI DRIFT MONITOR)
+           =================================================================== -->
+      <div class="tab-pane" id="pane-defenses">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Population Stability Index (PSI) Feature Drift</h2>
+              <p class="panel-subtitle">Tracks statistical divergence between baseline training distributions and production inference features.</p>
+            </div>
+            <button class="btn btn-secondary" id="btn-refresh-drift">
+              <span>🔍</span> Run PSI Audit
+            </button>
+          </div>
+
+          <div class="shap-narrative-card mb-3" id="drift-summary-box">
+            <div class="narrative-header" id="drift-status-title">Feature Distributions Stable</div>
+            <p class="narrative-text" id="drift-status-desc">Maximum PSI across behavioral attributes is below the 0.10 threshold.</p>
+          </div>
+
+          <div class="table-responsive mt-3">
+            <table class="data-table" id="drift-table">
+              <thead>
+                <tr>
+                  <th>Feature Name</th>
+                  <th>Calculated PSI</th>
+                  <th>Drift Classification</th>
+                  <th>Recommendation</th>
+                </tr>
+              </thead>
+              <tbody id="drift-table-body">
+                <tr>
+                  <td colspan="4" class="text-center text-muted py-4">Click "Run PSI Audit" to query live vectors.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           TAB 5: INCIDENT WAR ROOM (SANDBOX & SIMULATION)
+           =================================================================== -->
+      <div class="tab-pane" id="pane-warroom">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Live Transaction Scoring Sandbox</h2>
+              <p class="panel-subtitle">Test custom transaction payloads, impossible travel scenarios, and velocity patterns.</p>
+            </div>
+          </div>
+
+          <form id="sandbox-form" class="details-grid" style="grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label class="text-dim text-xs">Card Number</label>
+              <input type="text" id="sb-card" class="input-control mt-2" value="4000123456789010" required />
+            </div>
+            <div>
+              <label class="text-dim text-xs">Amount ($ USD)</label>
+              <input type="number" step="0.01" id="sb-amt" class="input-control mt-2" value="9480.00" required />
+            </div>
+            <div>
+              <label class="text-dim text-xs">Merchant Name</label>
+              <input type="text" id="sb-merchant" class="input-control mt-2" value="fraud_Luxury_Jewelers" required />
+            </div>
+            <div>
+              <label class="text-dim text-xs">Merchant Category</label>
+              <select id="sb-category" class="select-control mt-2" style="width: 100%;">
+                <option value="shopping_net">shopping_net (Online Luxury Shopping)</option>
+                <option value="travel">travel (Airlines / Cross-Border)</option>
+                <option value="grocery_pos">grocery_pos (Grocery Store)</option>
+                <option value="misc_net">misc_net (Misc Online)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-dim text-xs">Payment Channel</label>
+              <select id="sb-channel" class="select-control mt-2" style="width: 100%;">
+                <option value="WEB">WEB (Online Checkout)</option>
+                <option value="POS">POS (Physical Terminal)</option>
+                <option value="APP">APP (Mobile)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-dim text-xs">Location Distance Profile</label>
+              <select id="sb-distance" class="select-control mt-2" style="width: 100%;">
+                <option value="far" selected>Hypersonic Flight (1,745 miles in 2 mins)</option>
+                <option value="international">International Cross-Border</option>
+                <option value="local">Local Normal (~5 km)</option>
+              </select>
+            </div>
+            <div style="grid-column: span 2;">
+              <button type="submit" class="btn btn-primary btn-block" id="btn-score-custom" style="width: 100%; justify-content: center; padding: 10px;">
+                <span>⚡</span> Score Transaction Inline
+              </button>
+            </div>
+          </form>
+
+          <div id="sandbox-result-box" class="shap-narrative-card mt-3 hidden">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================
+           TAB 6: MODEL DIAGNOSTICS & RETRAINING
+           =================================================================== -->
+      <div class="tab-pane" id="pane-diagnostics">
+        <div class="panel-card">
+          <div class="panel-header">
+            <div>
+              <h2 class="panel-title">Model Diagnostics & Feedback Retrain Pipeline</h2>
+              <p class="panel-subtitle">Versioned models, validation benchmarks, and automated feedback retraining.</p>
+            </div>
+          </div>
+
+          <div class="details-grid mb-3" style="grid-template-columns: 1fr 1fr; gap: 14px;">
+            <div>
+              <label class="text-dim text-xs">Target Model Version Tag</label>
+              <input type="text" id="input-retrain-version" class="input-control mt-2" placeholder="e.g. v1.0.1 (leave blank for auto)" />
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: flex-end;">
+              <button class="btn btn-primary" id="btn-trigger-retrain" style="height: 34px; justify-content: center;">
+                <span>🚀</span> Start Retraining & Hot-Reload
+              </button>
+            </div>
+          </div>
+
+          <div id="retrain-progress-msg" class="text-dim text-xs mb-3"></div>
+
+          <div class="models-grid" id="models-list-container">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Bottom Hardware Status Footer -->
+  <footer class="cyber-footer">
+    <div class="footer-left">
+      <span class="footer-tag-blue">CLUSTER</span>
+      <span class="footer-item">PROD-US-EAST (v1.0.0)</span>
+      <span>|</span>
+      <span class="footer-item">ACTIVE WORKERS: <strong>8</strong></span>
+      <span>|</span>
+      <span class="footer-item-cyan">PSI DRIFT: <strong>0.0039</strong></span>
+      <span>|</span>
+      <span class="footer-item-cyan">STREAM LAG: <strong>0.0ms</strong></span>
+      <span>|</span>
+      <span class="footer-item">STATUS: <strong>HEALTHY</strong></span>
+    </div>
+
+    <div class="footer-right">
+      <span>ACTIVE <span class="active-cursor">█</span></span>
+      <span>REAL-TIME SCORING FEED // TICK <strong id="footer-tick-count">89,420,119</strong></span>
+    </div>
+  </footer>
+
+  <!-- CASE INVESTIGATION MODAL (SHAP EXPLAINABILITY) -->
+  <div class="modal-backdrop" id="modal-alert-detail">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-case-title">Case Investigation: Alert #0</h3>
+        <button class="modal-close" id="btn-modal-close">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="case-score-banner">
+          <div class="score-block">
+            <div class="score-label">Supervised XGBoost Risk</div>
+            <div class="score-val" id="modal-risk-score">0.00%</div>
+            <div class="score-bar"><div class="score-fill bg-crimson" id="modal-risk-bar" style="width: 0%"></div></div>
+          </div>
+          <div class="score-block">
+            <div class="score-label">Isolation Forest Anomaly</div>
+            <div class="score-val" id="modal-anomaly-score">0.00%</div>
+            <div class="score-bar"><div class="score-fill bg-amber" id="modal-anomaly-bar" style="width: 0%"></div></div>
+          </div>
+          <div class="score-block">
+            <div class="score-label">Decision & Action</div>
+            <div class="decision-pill" id="modal-decision-pill">REVIEW</div>
+          </div>
+        </div>
+
+        <div class="shap-narrative-card">
+          <div class="narrative-header">✨ SHAP Explainability Synthesis</div>
+          <p class="narrative-text" id="modal-shap-narrative">Calculating feature attribution factors...</p>
+        </div>
+
+        <div class="shap-chart-wrapper" id="shap-chart-container">
+          <!-- Injected by JS -->
+        </div>
+
+        <div class="details-grid" id="modal-details-grid">
+          <!-- Injected by JS -->
+        </div>
+
+        <div class="resolution-section" id="modal-resolution-section">
+          <div class="resolution-actions">
+            <div class="flex-1">
+              <input type="text" id="modal-analyst-notes" class="input-control" placeholder="Add investigation notes or case rationale..." />
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-success" id="btn-resolve-fp">
+                <span>✅</span> Mark False Positive
+              </button>
+              <button class="btn btn-danger" id="btn-resolve-fraud">
+                <span>🚨</span> Confirm Fraud
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="resolved-info-banner hidden" id="modal-resolved-banner"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENGINE CONTROL & SETTINGS MODAL -->
+  <div class="modal-backdrop" id="modal-settings">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ AEGIS//GUARD ENGINE CONTROL & SETTINGS</h3>
+        <button class="modal-close" id="btn-settings-close">&times;</button>
+      </div>
+
+      <div class="settings-tabs-nav">
+        <button class="settings-tab-btn active" data-settings-tab="thresholds">
+          <span>🎛️</span> Scoring Thresholds
+        </button>
+        <button class="settings-tab-btn" data-settings-tab="notifications">
+          <span>🔔</span> Alerts & Sound
+        </button>
+        <button class="settings-tab-btn" data-settings-tab="theme">
+          <span>🎨</span> Cyber Theme
+        </button>
+        <button class="settings-tab-btn" data-settings-tab="mlops">
+          <span>🛡️</span> Diagnostics & State
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Tab 1: Scoring Thresholds -->
+        <div class="settings-pane active" id="settings-pane-thresholds">
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>SUPERVISED XGBOOST DECISION BOUNDARIES</span>
+              <span class="badge-version">REAL-TIME INFERENCE</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">High-Confidence BLOCK Threshold (PRD FR-6)</div>
+                  <div class="setting-desc">Transactions exceeding this probability score are immediately terminated at checkout.</div>
+                </div>
+                <span class="setting-value-badge" id="val-xgb-block">80%</span>
+              </div>
+              <input type="range" class="cyber-range-slider" id="slider-xgb-block" min="50" max="95" step="1" value="80" />
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">Priority REVIEW Threshold (PRD FR-7)</div>
+                  <div class="setting-desc">Transactions exceeding this score are routed to priority analyst triage.</div>
+                </div>
+                <span class="setting-value-badge" id="val-xgb-review">20%</span>
+              </div>
+              <input type="range" class="cyber-range-slider" id="slider-xgb-review" min="5" max="50" step="1" value="20" />
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>UNSUPERVISED ISOLATION FOREST ANOMALY SENSITIVITY</span>
+              <span class="badge-version">NOVEL THREAT DETECTION</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">Anomaly Outlier Score Threshold (PRD FR-8)</div>
+                  <div class="setting-desc">Triggers priority analyst review for abnormal behavioral patterns even with low supervised fraud score.</div>
+                </div>
+                <span class="setting-value-badge" id="val-if-anomaly">65%</span>
+              </div>
+              <input type="range" class="cyber-range-slider" id="slider-if-anomaly" min="40" max="90" step="1" value="65" />
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">Impossible Travel Speed Cap (km/h)</div>
+                  <div class="setting-desc">Calculates implied cardholder velocity between successive geolocation coordinates.</div>
+                </div>
+                <span class="setting-value-badge" id="val-speed-cap">500 km/h</span>
+              </div>
+              <input type="range" class="cyber-range-slider" id="slider-speed-cap" min="200" max="1000" step="50" value="500" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Alerts & Sound -->
+        <div class="settings-pane" id="settings-pane-notifications">
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>AUDIO & HARDWARE ALERTS</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="toggle-switch-wrap">
+                <div>
+                  <div class="setting-title">Synthesizer Cyber Audio Chime on BLOCK / CRITICAL</div>
+                  <div class="setting-desc">Synthesizes a high-urgency alert tone using the Web Audio API when high-risk transactions occur.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-sound-enabled" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="toggle-switch-wrap">
+                <div>
+                  <div class="setting-title">Browser Desktop Push Notifications</div>
+                  <div class="setting-desc">Sends system OS notifications when critical fraud spikes or PSI feature drifts occur.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-browser-notifs" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>TELEMETRY & POLLING DYNAMICS</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">Dashboard Live Polling Frequency</div>
+                  <div class="setting-desc">Controls how frequently stats, counters, and live threat streams sync with the backend.</div>
+                </div>
+                <select id="setting-polling-rate" class="input-control" style="width: 150px; padding: 4px 8px; font-size: 11.5px;">
+                  <option value="1000">1 Second (Fast)</option>
+                  <option value="2000" selected>2 Seconds (Standard)</option>
+                  <option value="5000">5 Seconds (Eco)</option>
+                  <option value="10000">10 Seconds (Relaxed)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="toggle-switch-wrap">
+                <div>
+                  <div class="setting-title">Auto-Refresh Alerts Table on New Stream Intercepts</div>
+                  <div class="setting-desc">Automatically updates triage table rows when new transaction events arrive.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-auto-refresh-table" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Theme & Display -->
+        <div class="settings-pane" id="settings-pane-theme">
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>NEON COLOR ACCENT PALETTE</span>
+            </div>
+
+            <div class="theme-swatches-grid">
+              <div class="theme-swatch-card active" data-theme="default">
+                <div class="swatch-color-circle" style="background: #38bdf8; box-shadow: 0 0 8px #38bdf8;"></div>
+                <div class="swatch-title">Cyan Cyber (Default)</div>
+              </div>
+              <div class="theme-swatch-card" data-theme="matrix">
+                <div class="swatch-color-circle" style="background: #10b981; box-shadow: 0 0 8px #10b981;"></div>
+                <div class="swatch-title">Emerald Matrix</div>
+              </div>
+              <div class="theme-swatch-card" data-theme="crimson">
+                <div class="swatch-color-circle" style="background: #f43f5e; box-shadow: 0 0 8px #f43f5e;"></div>
+                <div class="swatch-title">Crimson Warzone</div>
+              </div>
+              <div class="theme-swatch-card" data-theme="amber">
+                <div class="swatch-color-circle" style="background: #f59e0b; box-shadow: 0 0 8px #f59e0b;"></div>
+                <div class="swatch-title">Sunset Amber</div>
+              </div>
+              <div class="theme-swatch-card" data-theme="purple">
+                <div class="swatch-color-circle" style="background: #a855f7; box-shadow: 0 0 8px #a855f7;"></div>
+                <div class="swatch-title">Synthwave Purple</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>VISUAL POLISH & ANIMATIONS</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="toggle-switch-wrap">
+                <div>
+                  <div class="setting-title">Footer Hardware Telemetry Tick Animation</div>
+                  <div class="setting-desc">Simulates live hardware clock ticks and EPS throughput calculations in the status bar.</div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-live-ticks" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Diagnostics & State -->
+        <div class="settings-pane" id="settings-pane-mlops">
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>SYSTEM STATE & QUICK ACTIONS</span>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">Export Complete System Diagnostic Logs</div>
+                  <div class="setting-desc">Generates a downloadable JSON report containing KPI stats, model parameters, and recent audit trails.</div>
+                </div>
+                <button class="btn btn-outline btn-sm" id="btn-export-diagnostics">
+                  <span>📥</span> Download JSON
+                </button>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-label-row">
+                <div>
+                  <div class="setting-title">Clear Active Notification Feed & Reset Cache</div>
+                  <div class="setting-desc">Clears local browser notification state and resets unread counters.</div>
+                </div>
+                <button class="btn btn-danger btn-sm" id="btn-reset-notif-cache">
+                  <span>🧹</span> Clear Cache
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-header">
+              <span>ACTIVE MODEL METRICS</span>
+            </div>
+            <div class="details-grid">
+              <div class="detail-item"><span class="detail-k">Active Model</span><span class="detail-v text-cyan">v1.0.0 (Hybrid Production)</span></div>
+              <div class="detail-item"><span class="detail-k">PR-AUC Score</span><span class="detail-v text-emerald font-bold">0.9710</span></div>
+              <div class="detail-item"><span class="detail-k">Recall @ 76.7% Prec</span><span class="detail-v text-emerald font-bold">96.00%</span></div>
+              <div class="detail-item"><span class="detail-k">Decision Policy</span><span class="detail-v">3-Tier (Approve/Review/Block)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="btn-settings-reset">Reset Defaults</button>
+        <button class="btn btn-primary" id="btn-settings-save">💾 Save & Apply Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cyber Toast Notification Container -->
+  <div class="cyber-toast-container" id="cyber-toast-container"></div>
+
+  <!-- Terminal Lock Screen Overlay -->
+  <div class="lockscreen-overlay" id="lockscreen-overlay">
+    <div class="lockscreen-card">
+      <div class="lockscreen-avatar" id="lockscreen-avatar">AG</div>
+      <div class="lockscreen-title">TERMINAL SESSION LOCKED</div>
+      <div class="lockscreen-status">AegisGuard scoring engine & background streams continue active monitoring in secured state.</div>
+      <div style="display:flex; flex-direction:column; gap:8px; width:100%; margin-top:8px;">
+        <button class="btn btn-primary" id="btn-unlock-console" style="width:100%; justify-content:center;">
+          <span>🔓</span> Resume Analyst Session
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/dashboard.js?v=1.0.1"></script>
+</body>
+</html>

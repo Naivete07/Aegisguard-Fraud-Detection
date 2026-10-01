@@ -1,0 +1,61 @@
+holdout,budget,model,precision,recall,f1,alerts,recall_heldout,recall_other
+grocery_pos,0.25%,XGBoost top-K,0.9482,0.7132,0.8141,695,0.1395,0.8872
+grocery_pos,0.25%,IF top-K,0.3827,0.2879,0.3286,695,0.1535,0.3286
+grocery_pos,0.25%,Tiered: 10% of budget to IF,0.895,0.6732,0.7684,695,0.1163,0.842
+grocery_pos,0.25%,Tiered: 25% of budget to IF,0.7871,0.592,0.6757,695,0.1163,0.7362
+grocery_pos,0.25%,Tiered: 50% of budget to IF,0.6,0.4513,0.5151,695,0.1256,0.5501
+grocery_pos,0.50%,XGBoost top-K,0.568,0.8539,0.6822,1389,0.4558,0.9746
+grocery_pos,0.50%,IF top-K,0.2642,0.3972,0.3173,1389,0.2512,0.4415
+grocery_pos,0.50%,Tiered: 10% of budget to IF,0.558,0.8387,0.6701,1389,0.4233,0.9647
+grocery_pos,0.50%,Tiered: 25% of budget to IF,0.5421,0.8149,0.6511,1389,0.3442,0.9577
+grocery_pos,0.50%,Tiered: 50% of budget to IF,0.4975,0.7478,0.5975,1389,0.2698,0.8928
+grocery_pos,1.00%,XGBoost top-K,0.299,0.8994,0.4488,2779,0.6093,0.9873
+grocery_pos,1.00%,IF top-K,0.1652,0.4968,0.2479,2779,0.2884,0.5599
+grocery_pos,1.00%,Tiered: 10% of budget to IF,0.2969,0.8929,0.4456,2779,0.5814,0.9873
+grocery_pos,1.00%,Tiered: 25% of budget to IF,0.294,0.8842,0.4413,2779,0.5535,0.9845
+grocery_pos,1.00%,Tiered: 50% of budget to IF,0.2882,0.8669,0.4326,2779,0.507,0.976
+grocery_pos,2.00%,XGBoost top-K,0.1544,0.9286,0.2648,5557,0.7209,0.9915
+grocery_pos,2.00%,IF top-K,0.1022,0.6147,0.1753,5557,0.4419,0.6671
+grocery_pos,2.00%,Tiered: 10% of budget to IF,0.1537,0.9242,0.2635,5557,0.7023,0.9915
+grocery_pos,2.00%,Tiered: 25% of budget to IF,0.1537,0.9242,0.2635,5557,0.7023,0.9915
+grocery_pos,2.00%,Tiered: 50% of budget to IF,0.1512,0.9091,0.2592,5557,0.6465,0.9887
+shopping_net,0.25%,XGBoost top-K,0.9914,0.7457,0.8511,695,0.6562,0.7743
+shopping_net,0.25%,IF top-K,0.3827,0.2879,0.3286,695,0.4911,0.2229
+shopping_net,0.25%,Tiered: 10% of budget to IF,0.9266,0.697,0.7956,695,0.5982,0.7286
+shopping_net,0.25%,Tiered: 25% of budget to IF,0.8058,0.6061,0.6918,695,0.5,0.64
+shopping_net,0.25%,Tiered: 50% of budget to IF,0.6331,0.4762,0.5435,695,0.4643,0.48
+shopping_net,0.50%,XGBoost top-K,0.64,0.9621,0.7687,1389,0.9375,0.97
+shopping_net,0.50%,IF top-K,0.2642,0.3972,0.3173,1389,0.6607,0.3129
+shopping_net,0.50%,Tiered: 10% of budget to IF,0.6364,0.9567,0.7644,1389,0.933,0.9643
+shopping_net,0.50%,Tiered: 25% of budget to IF,0.6242,0.9383,0.7497,1389,0.9062,0.9486
+shopping_net,0.50%,Tiered: 50% of budget to IF,0.5205,0.7825,0.6252,1389,0.7411,0.7957
+shopping_net,1.00%,XGBoost top-K,0.3271,0.9838,0.491,2779,0.9777,0.9857
+shopping_net,1.00%,IF top-K,0.1652,0.4968,0.2479,2779,0.7768,0.4071
+shopping_net,1.00%,Tiered: 10% of budget to IF,0.3271,0.9838,0.491,2779,0.9777,0.9857
+shopping_net,1.00%,Tiered: 25% of budget to IF,0.3249,0.9773,0.4877,2779,0.9643,0.9814
+shopping_net,1.00%,Tiered: 50% of budget to IF,0.3217,0.9675,0.4829,2779,0.9509,0.9729
+shopping_net,2.00%,XGBoost top-K,0.1645,0.9892,0.2821,5557,0.9821,0.9914
+shopping_net,2.00%,IF top-K,0.1022,0.6147,0.1753,5557,0.933,0.5129
+shopping_net,2.00%,Tiered: 10% of budget to IF,0.1641,0.987,0.2814,5557,0.9866,0.9871
+shopping_net,2.00%,Tiered: 25% of budget to IF,0.1641,0.987,0.2814,5557,0.9866,0.9871
+shopping_net,2.00%,Tiered: 50% of budget to IF,0.1639,0.9859,0.2811,5557,0.9866,0.9857
+misc_net,0.25%,XGBoost top-K,0.9957,0.7489,0.8548,695,0.5304,0.78
+misc_net,0.25%,IF top-K,0.3827,0.2879,0.3286,695,0.5478,0.2509
+misc_net,0.25%,Tiered: 10% of budget to IF,0.9295,0.6991,0.798,695,0.5478,0.7206
+misc_net,0.25%,Tiered: 25% of budget to IF,0.8187,0.6158,0.7029,695,0.5478,0.6255
+misc_net,0.25%,Tiered: 50% of budget to IF,0.6388,0.4805,0.5485,695,0.5217,0.4747
+misc_net,0.50%,XGBoost top-K,0.6343,0.9535,0.7618,1389,0.8087,0.974
+misc_net,0.50%,IF top-K,0.2642,0.3972,0.3173,1389,0.6435,0.3622
+misc_net,0.50%,Tiered: 10% of budget to IF,0.6357,0.9556,0.7635,1389,0.8348,0.9728
+misc_net,0.50%,Tiered: 25% of budget to IF,0.6299,0.947,0.7566,1389,0.8435,0.9617
+misc_net,0.50%,Tiered: 50% of budget to IF,0.5162,0.776,0.62,1389,0.6087,0.7998
+misc_net,1.00%,XGBoost top-K,0.3264,0.9816,0.4899,2779,0.9217,0.9901
+misc_net,1.00%,IF top-K,0.1652,0.4968,0.2479,2779,0.7739,0.4574
+misc_net,1.00%,Tiered: 10% of budget to IF,0.3257,0.9794,0.4888,2779,0.9217,0.9876
+misc_net,1.00%,Tiered: 25% of budget to IF,0.3242,0.9751,0.4866,2779,0.9043,0.9852
+misc_net,1.00%,Tiered: 50% of budget to IF,0.3192,0.96,0.4791,2779,0.8522,0.9753
+misc_net,2.00%,XGBoost top-K,0.1648,0.9913,0.2827,5557,0.9913,0.9913
+misc_net,2.00%,IF top-K,0.1022,0.6147,0.1753,5557,0.8696,0.5785
+misc_net,2.00%,Tiered: 10% of budget to IF,0.1648,0.9913,0.2827,5557,0.9913,0.9913
+misc_net,2.00%,Tiered: 25% of budget to IF,0.1648,0.9913,0.2827,5557,0.9913,0.9913
+misc_net,2.00%,Tiered: 50% of budget to IF,0.1639,0.9859,0.2811,5557,0.9565,0.9901

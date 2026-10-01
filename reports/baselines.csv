@@ -1,0 +1,7 @@
+dataset,model,pr_auc,precision,recall,f1,threshold,fit_seconds
+ulb,LogisticRegression,0.735,0.9429,0.6346,0.7586,1.0,1.1
+ulb,XGBoost,0.7732,0.9286,0.75,0.8298,0.9182,2.6
+sparkov,LogisticRegression,0.126,0.256,0.4524,0.3269,0.9661,1.7
+sparkov,XGBoost,0.8598,0.7698,0.7998,0.7845,0.9352,8.9
+ieee,LogisticRegression,0.1763,0.1983,0.3192,0.2446,0.8777,7.2
+ieee,XGBoost,0.458,0.5126,0.422,0.4629,0.8634,6.1

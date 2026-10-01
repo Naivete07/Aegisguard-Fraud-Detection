@@ -1,0 +1,118 @@
+# =============================================================================
+# AegisGuard Fraud Detection Engine - Git Ignore Configuration
+# Optimized for GitHub, Vercel, Render & Docker Deployments
+# =============================================================================
+
+# --- Heavy Datasets & Raw Files (Never push raw/processed datasets) ---
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.csv.gz
+*.tar.gz
+*.zip
+
+# Ignore raw data files inside subdirectories
+data/raw/ieee/*
+data/raw/sparkov/*
+data/raw/ulb/*
+
+# --- SQLite Databases & Local Runtime Storage ---
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# --- Python & Virtual Environments ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# --- Environment & Secret Configuration ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# --- Testing, Coverage & Profiling ---
+.pytest_cache/
+.coverage
+.coverage.*
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# --- Models & Heavy Checkpoints ---
+# Keep lightweight production models for out-of-the-box deployment
+!models/latest.joblib
+!models/production_model_v1.0.0.joblib
+# Ignore transient or large checkpoint files
+models/*.pt
+models/*.pth
+models/*.ckpt
+models/*.bin
+
+# --- IDE, Editor & OS System Files ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Deployment Caches & Artifacts ---
+.vercel
+.render
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

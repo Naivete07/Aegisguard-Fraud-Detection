@@ -1,0 +1,5 @@
+model,pr_auc,precision,recall,f1,alerts,recall_heldout,recall_other,n_heldout_test_fraud
+XGBoost only,0.9596,0.9625,0.8604,0.9086,826,0.808,0.8771,224
+Isolation Forest only,0.3218,0.229,0.4491,0.3034,1812,0.7143,0.3643,224
+OR-fusion (IF top 0.5%),,0.2146,0.9026,0.3467,3887,0.9107,0.9,224
+Stacked (IF score -> XGBoost),0.9514,0.9571,0.8214,0.8841,793,0.7098,0.8571,224

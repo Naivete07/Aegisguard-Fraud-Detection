@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aegis_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: fraud
+      POSTGRES_PASSWORD: fraud
+      POSTGRES_DB: fraud
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fraud -d fraud"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: aegis_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis_api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://fraud:fraud@postgres:5432/fraud
+      - REDIS_URL=redis://redis:6379/0
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./reports:/app/reports
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  stream_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis_stream_worker
+    restart: unless-stopped
+    command: ["python", "-m", "src.stream.worker"]
+    environment:
+      - DATABASE_URL=postgresql://fraud:fraud@postgres:5432/fraud
+      - REDIS_URL=redis://redis:6379/0
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  redisdata:
